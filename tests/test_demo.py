@@ -35,7 +35,7 @@ from privacy import (
     mask,
     shift_date,
 )
-from report import metrics, same_shares, topology
+from report import graph_svg, metrics, same_shares, topology
 from synthesis import describe, fit, generate, realize
 
 HERE = Path(__file__).resolve().parents[1]
@@ -154,6 +154,16 @@ def test_the_operations_table_shows_every_operation_acting_on_real_input(source,
         assert row["Columns"] and "→" in row["Example"]
     removal = next(row for row in rows if row["Operation"] == "Remove Column")
     assert removal["Example"].endswith("(column removed)")
+
+
+def test_graph_shows_applications_components_and_interfaces(source):
+    svg = graph_svg(source, "test")
+    assert svg.count('class="application-node graph-detail"') == SIZES["applications"]
+    assert svg.count('class="component-node graph-detail"') == SIZES["components"]
+    assert svg.count('class="ownership-edge"') == SIZES["components"]
+    assert svg.count('class="interface-hit graph-detail"') == SIZES["interfaces"]
+    assert svg.count('marker-end="url(#arrow-test)"') == SIZES["interfaces"]
+    assert "Payments Platform" in svg and "Protocol: HTTPS" in svg
 
 
 def test_heuristics_leave_a_real_choice_to_the_judge(anonymized):
