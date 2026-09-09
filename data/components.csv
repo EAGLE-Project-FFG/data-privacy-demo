@@ -1,0 +1,17 @@
+component_id,application_id,name,component_type,network_zone,ip_address,description
+1,1,pay-api-prod-01,Application,DMZ,172.16.4.11,Public payment API endpoint terminating merchant traffic.
+2,1,pay-core-prod-01,Middleware,Internal,10.20.8.21,Authorization and capture logic for card transactions.
+3,1,pay-db-prod-01,Database,Restricted,192.168.16.31,Transaction ledger and tokenized card references.
+4,2,portal-web-prod-01,Application,DMZ,172.16.4.12,Customer-facing web front end and session handling.
+5,2,portal-db-prod-01,Database,Restricted,192.168.16.32,"Portal accounts, preferences and audit trail."
+6,3,bill-batch-prod-01,Application,Internal,10.20.8.22,Nightly invoice run and dunning batch scheduler.
+7,3,bill-db-prod-01,Database,Restricted,192.168.16.33,"Invoice lines, tariffs and dunning state."
+8,4,hr-app-prod-01,Application,Internal,10.40.8.23,Payroll and absence management application server.
+9,4,hr-db-prod-01,Database,Restricted,192.168.16.34,Personnel master data and salary records.
+10,5,dwh-etl-prod-01,Middleware,Internal,10.50.8.24,Nightly extract and load jobs across the source systems.
+11,5,dwh-db-prod-01,Database,Restricted,192.168.16.35,Consolidated fact and dimension tables for reporting.
+12,6,esb-bus-prod-01,Middleware,DMZ,172.16.4.13,Central message bus routing all partner traffic.
+13,6,gw-sftp-prod-01,Application,DMZ,172.16.4.14,Managed file transfer endpoint for partner batch files.
+14,7,field-api-prod-01,Application,DMZ,172.16.4.15,Mobile backend for work orders and time recording.
+15,8,arch-store-prod-01,Fileshare,Internal,10.80.8.25,Write-once document store for signed contracts.
+16,8,arch-index-prod-01,Application,Internal,10.80.8.26,Full-text index and retrieval service over the archive.

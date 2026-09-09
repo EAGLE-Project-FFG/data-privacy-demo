@@ -1,0 +1,19 @@
+interface_id,source_component_id,target_component_id,protocol,port,description
+1,1,2,HTTPS,443,Authorization requests from the public API to the payment core.
+2,2,3,SQL,1433,Ledger writes and balance lookups.
+3,4,2,HTTPS,443,Portal payment initiation against the payment core.
+4,4,5,SQL,1433,Portal account and preference reads.
+5,6,7,SQL,1433,Invoice line writes during the nightly run.
+6,6,3,SQL,1433,Settled transaction reads for invoice creation.
+7,8,9,SQL,1433,Payroll master data access.
+8,10,3,SQL,1433,Nightly extract of the transaction ledger.
+9,10,5,SQL,1433,Nightly extract of portal accounts.
+10,10,7,SQL,1433,Nightly extract of invoice lines.
+11,10,9,SQL,1433,Nightly extract of personnel data.
+12,10,11,SQL,1433,Load into the reporting model.
+13,12,1,HTTPS,443,Partner payment instructions routed to the payment API.
+14,12,6,HTTPS,443,Partner billing events routed to the invoice run.
+15,12,8,HTTPS,443,Partner staffing events routed to the HR application.
+16,13,12,SFTP,22,Partner batch files handed to the message bus.
+17,14,12,HTTPS,443,Field work order events published to the message bus.
+18,16,15,SMB,445,Index reads over the document store.

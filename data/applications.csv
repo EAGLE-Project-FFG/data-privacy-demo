@@ -1,0 +1,9 @@
+application_id,name,owner,cost_center,criticality,annual_cost_eur,go_live_date,description
+1,Payments Platform,Anna Weber,CC-4471,High,480000,2019-03-14,Card and direct-debit payment processing for all retail channels.
+2,Customer Portal,Markus Steiner,CC-4472,High,310000,2021-07-02,"Self-service portal for contract, invoice and address changes."
+3,Billing Engine,Anna Weber,CC-4471,High,275000,2017-11-23,Monthly invoice run and dunning for retail and business customers.
+4,HR Suite,Lena Fischer,CC-5310,Medium,190000,2020-01-09,"Payroll, absence and personnel master data."
+5,Data Warehouse,Anna Weber,CC-6002,Medium,520000,2016-05-30,"Consolidated reporting across finance, sales and operations."
+6,Partner Gateway,Markus Steiner,CC-4472,High,240000,2022-09-16,B2B message exchange with logistics and settlement partners.
+7,Field Service App,Lena Fischer,CC-5310,Low,95000,2023-02-27,Mobile work orders and time recording for field technicians.
+8,Document Archive,Tobias Berger,CC-6002,Low,130000,2015-08-11,Long-term retention of contracts and signed customer documents.
