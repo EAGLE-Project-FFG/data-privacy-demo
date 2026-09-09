@@ -183,7 +183,7 @@ def same_shares(anonymized, synthetic, columns):
     )
 
 
-def write_report(output, stages, seed, induction, fitted):
+def write_report(output, stages, seed, fitted):
     import networkx as nx
 
     source, anonymized, synthetic = (stages[key] for key in ("source", "anonymized", "synthetic"))
@@ -209,10 +209,6 @@ def write_report(output, stages, seed, induction, fitted):
         "synthetic_reproduces_every_category_share": same_shares(anonymized, synthetic, categories),
         "foreign_keys": "validated",
     }
-    unchanged = summary["anonymization_preserves_every_edge"]
-    chosen = induction["chosen"]
-    rejected = len(induction["candidates"][1]) - len(chosen["foreign_keys"])
-
     graphs = "".join(
         f"<figure>{graph_svg(stages[key])}<figcaption>{escape(label)}</figcaption></figure>"
         for key, label in GRAPHS
@@ -271,62 +267,23 @@ th{{background:#eef2f5;position:sticky;top:0;font-weight:600}}
 </style>
 <h1>Anonymization and synthetic generation of an architecture landscape</h1>
 <div class="story">
-<div><b>1. Input CSV data</b>8 applications, 16 components, and 18 interfaces in three connected
-toy tables.</div>
-<div><b>2. Protect attributes</b>Seven anonymization and pseudonymization transformations hide
-sensitive values—but leave every relationship intact.</div>
-<div><b>3. Replace the structure</b>PluRel creates fresh rows and relationships; {escape(MODEL)}
-fills their names and descriptions.</div>
+<div><b>1. Input CSV data</b>3 connected Tables with: 8 applications, 16 components, and 18 interfaces.</div>
+<div><b>2. Protect attributes</b>Seven anonymization and pseudonymization transformations to hide
+sensitive values (but leave every relationship intact).</div>
+<div><b>3. Replace the structure</b>PluRel creates new rows and relationships. The LLM fills their names and descriptions.</div>
 </div>
 
-<h2>The point: hidden values do not hide structure</h2>
+<h2>Topology</h2>
 <div class="graphs">{graphs}</div>
-<p>Color denotes the application a component belongs to; node size denotes degree. Sensitive
-attributes have changed in the middle graph, but every edge is still present:
-<strong>{unchanged}</strong>. Pseudonymizing identifiers would change only the labels, not this
-topology.</p>
-<p>The synthetic graph replaces the rows and edges while keeping the schema, foreign-key
-integrity, table sizes, and selected attribute distributions. It matches the source row counts,
-<strong>{summary["synthetic_matches_source_row_counts"]}</strong>, and is not the source graph
-relabelled,
-<strong>{summary["synthetic_graph_differs_from_source"]}</strong>.</p>
 
-<h2>What happened to the fields</h2>
-<p>Every column gets one operation based on what it contains. The examples below come directly
-from this run. The paper defines seven transformations; <em>Retain</em> marks deliberately unchanged
-columns.</p>
+<h2>Applied Techniques</h2>
 {html_table(examples(source, anonymized))}
 
 <h2>Stages</h2>
-<p>The three tables keep the same position in every tab, so switching compares a table against
-itself.</p>
 <div class="stages">{switch}<div class="tabs">{labels}</div>{notes}{panels}</div>
-<p>Between stage 2 and stage 3 the schema is induced. Heuristics list every column that is
-present and unique, and every column whose values all appear in another table's candidate key;
-{escape(MODEL)} picks the identifier of record for each table and keeps the references that are
-real, rejecting {rejected} of the {len(induction["candidates"][1])} foreign key candidates. Each
-choice is then checked against the data, and a choice that does not hold stops the run. The
-chosen keys are {escape(", ".join(f"{t}.{c}" for t, c in chosen["primary_keys"].items()))}.</p>
 
 <h2>Comparison</h2>
 {html_table(measures)}
-<p>The source and anonymized graph measures are equal throughout, which is the point of the
-middle graph. Row counts and category shares are reproduced because generation is given them:
-every fitted share came back unchanged,
-<strong>{summary["synthetic_reproduces_every_category_share"]}</strong>. The highest degree and
-the number of disconnected groups are not given to it and come from PluRel's own graph priors.
-Foreign keys resolve at every stage, and the exported SQLite database passes its own check.</p>
-
-<h2>Scope</h2>
-<p>Seed {seed}. What crosses from the anonymized tables into generation is three row counts, the
-share of each category, the range of each number and date, the shape of the owner portfolios,
-and which port and network follow a protocol and a zone. All of it is recorded in
-<code>summary.json</code>. No source row, identifier, pseudonym, or edge crosses over.</p>
-<p>This demonstrates the mechanism, not a privacy guarantee. Pseudonyms leak equality, masking
-leaks the network and the length of the address, distortion leaves the order of magnitude, and a
-shifted date keeps its year. Nothing here establishes differential privacy or anonymity, and the
-structural fidelity of the synthetic landscape is not measured. The input tables are invented,
-so every file this run writes is safe to share.</p>
 </html>"""
     (output / "report.html").write_text(page, encoding="utf-8")
     return summary

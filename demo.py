@@ -138,7 +138,7 @@ def run(args):
         "stringless": stringless,
         "synthetic": synthetic,
     }
-    summary = write_report(output, stages, args.seed, induction, fitted)
+    summary = write_report(output, stages, args.seed, fitted)
     write_json(output / "summary.json", {**describe(fitted), **summary})
     print(
         f"\nAnonymization preserved every edge: "
