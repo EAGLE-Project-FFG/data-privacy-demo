@@ -1,4 +1,4 @@
-# EAGLE synthetic-data conference demo
+# EAGLE Data Anonymization/Pseudonymization & Synthetic Data Generation
 
 A small demo for *Beyond Attribute Anonymization: Structure-Preserving
 Synthetic Data Generation for LLM-Assisted Enterprise Architecture Analysis*.
